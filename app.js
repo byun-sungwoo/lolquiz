@@ -90,6 +90,7 @@ class Game {
 	isCorrect(ans) {
 		ans = ans.split(' ').join('');
 		ans = ans.split('\'').join('');
+		ans = ans.split('.').join('');
 		if(ans.toLowerCase() === this.getChampion().name.toLowerCase()) {
 			this.next();
 			return true;
@@ -156,8 +157,12 @@ function initBot() {
 		if(mainGame !== null && !mainGame.gameover) {
 			if(mainGame.isCorrect(msg.content)){
 				msg.react('👍');
+				let embMessage = new Discord.MessageEmbed()
+					.setColor('#61FF61')
+					.setTitle(`${msg.author.username} got it!`);
 				if(!mainGame.gameover)
-					msg.channel.send(`${msg.author.username} got it!\nNext Question!`);
+					embMessage.setDescription(`Next Question!`);
+				msg.channel.send(embMessage);
 				correct = true;
 			} else {
 				msg.delete();
@@ -204,6 +209,7 @@ function initBot() {
 					let name = sp.replace(input[0], '');
 					name = name.split(' ').join('');
 					name = name.split('\'').join('');
+					name = name.split('.').join('');
 					for(var i in championData) {
 						if(championData[i].name.toLowerCase() === name.toLowerCase()) {
 							// console.log(championData[i]);
